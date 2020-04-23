@@ -25,12 +25,14 @@ void fill_string(struct String * s, char * data) {
   s->data = str;
 }
 
+// allocate an array of characters on the heap and return a string
 struct String string_from(char * data) {
   struct String s = new_string();
   fill_string(&s, data);
   return s;
 }
 
+// set the letters in the string to uppercase
 void uppercase(struct String * s) {
   int i;
   for(i = 0; i < s->len; i++) {
@@ -39,6 +41,7 @@ void uppercase(struct String * s) {
   }
 }
 
+// set the letters in the string to lowercase
 void lowercase(struct String * s) {
   int i;
   for(i = 0; i < s->len; i++) {
@@ -79,6 +82,42 @@ int contains(struct String * s, char * data) {
   }
 }
 
+void append(struct String * s, char * data) {
+  size_t data_len = strlen(data);
+  // new_len includes the '\0' terminator
+  size_t new_len = data_len + s->len;
+
+  char * old_str = s->data;
+  char * new_str = malloc(new_len);
+
+  // strncpy pads the remaining dest space with '\0' if it finds a '\0'
+  strncpy(new_str, s->data, s->len);
+  strncat(new_str, data, data_len);
+
+  free(old_str);
+
+  s->data = new_str;
+  s->len = new_len;
+}
+
+void prepend(struct String * s, char * data) {
+  size_t data_len = strlen(data);
+  // new_len includes the '\0' terminator
+  size_t new_len = data_len + s->len;
+
+  char * old_str = s->data;
+  char * new_str = malloc(new_len);
+  memset(new_str, '\0', new_len);
+
+  strncpy(new_str, data, data_len);
+  strncat(new_str, s->data, s->len);
+
+  free(old_str);
+
+  s->data = new_str;
+  s->len = new_len;
+}
+
 int main(int argc, char *argv[]) {
   int count = argc - 1;
   struct String *args = malloc(sizeof(struct String) * count);
@@ -108,9 +147,17 @@ int main(int argc, char *argv[]) {
     printf("yes\n");
   }
 
-  if(contains(&args[0], "gggg")) {
+  if(contains(&args[0], "g")) {
     printf("yes\n");
   }
+
+  append(&args[0], " all this text has been appended to the end of the string");
+
+  printf("%s\n", args[0].data);
+
+  prepend(&args[0], "all this text has been prepended to the beginning of the string ");
+
+  printf("%s\n", args[0].data);
 
   for(i = 0; i < count; i++) {
     free(args[i].data);
