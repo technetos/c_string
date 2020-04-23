@@ -20,7 +20,8 @@ void fill_string(struct String * s, char * data) {
   // strlen returns the length of the string - \n
   size_t len = strlen(data) + 1;
   char * str = malloc(len);
-  strcpy(str, data);
+  memset(str, '\0', len);
+  memcpy(str, data, len - 1);
   s->len = len;
   s->data = str;
 }
@@ -89,9 +90,9 @@ void append(struct String * s, char * data) {
 
   char * old_str = s->data;
   char * new_str = malloc(new_len);
+  memset(new_str, '\0', new_len);
 
-  // strncpy pads the remaining dest space with '\0' if it finds a '\0'
-  strncpy(new_str, s->data, s->len);
+  memcpy(new_str, s->data, s->len - 1);
   strncat(new_str, data, data_len);
 
   free(old_str);
@@ -109,8 +110,8 @@ void prepend(struct String * s, char * data) {
   char * new_str = malloc(new_len);
   memset(new_str, '\0', new_len);
 
-  strncpy(new_str, data, data_len);
-  strncat(new_str, s->data, s->len);
+  memcpy(new_str, data, data_len);
+  strncat(new_str, s->data, s->len - 1);
 
   free(old_str);
 
