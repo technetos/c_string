@@ -83,6 +83,7 @@ int contains(struct String * s, char * data) {
   }
 }
 
+// Append a char * array to the end of the string
 void append(struct String * s, char * data) {
   size_t data_len = strlen(data);
   // new_len includes the '\0' terminator
@@ -101,6 +102,7 @@ void append(struct String * s, char * data) {
   s->len = new_len;
 }
 
+// Prepend a char * array to the beginning of the string
 void prepend(struct String * s, char * data) {
   size_t data_len = strlen(data);
   // new_len includes the '\0' terminator
@@ -126,9 +128,6 @@ int main(int argc, char *argv[]) {
   int i;
   for(i = 0; i < count; i++) {
     args[i] = string_from(argv[i + 1]);
-  }
-
-  for(i = 0; i < count; i++) {
     printf("%s with length %zu\n", args[i].data, args[i].len);
   }
 
