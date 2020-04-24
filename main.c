@@ -96,10 +96,11 @@ void append(struct String * s, char * data) {
   memcpy(new_str, s->data, s->len - 1);
   strncat(new_str, data, data_len);
 
-  free(old_str);
 
   s->data = new_str;
   s->len = new_len;
+
+  free(old_str);
 }
 
 // Prepend a char * array to the beginning of the string
@@ -115,10 +116,10 @@ void prepend(struct String * s, char * data) {
   memcpy(new_str, data, data_len);
   strncat(new_str, s->data, s->len - 1);
 
-  free(old_str);
-
   s->data = new_str;
   s->len = new_len;
+  
+  free(old_str);
 }
 
 int main(int argc, char *argv[]) {
